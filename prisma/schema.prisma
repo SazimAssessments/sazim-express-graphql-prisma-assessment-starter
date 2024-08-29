@@ -1,0 +1,43 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model TestTable {
+  id             Int      @id @default(autoincrement())
+  uniqueString   String   @unique @map("unique_string")
+  nullableString String?  @map("nullable_string")
+  booleanField   Boolean  @default(false) @map("boolean_field")
+  integerField   Int      @map("integer_field")
+  floatField     Float    @map("float_field")
+  decimalField   Decimal  @map("decimal_field") @db.Decimal(10, 2)
+  dateField      DateTime @map("date_field") @db.Date
+  dateTimeField  DateTime @default(now()) @map("date_time_field")
+  timeField      DateTime @map("time_field") @db.Time
+  enumField      TestEnum @map("enum_field")
+  jsonField      Json     @map("json_field")
+  bigIntField    BigInt   @map("big_int_field")
+  bytesField     Bytes    @map("bytes_field")
+  arrayField     String[] @map("array_field")
+  computedField  String   @default("test") @map("computed_field")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  @@index([uniqueString, integerField])
+  @@map("test_table")
+}
+
+enum TestEnum {
+  OPTION_A
+  OPTION_B
+  OPTION_C
+}
